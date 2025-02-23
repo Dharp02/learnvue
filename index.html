@@ -14,18 +14,25 @@
             .box.three {
                 background-color: blue;
             }
+            [v-cloak]{
+                display: none;
+            }
+            input{
+                margin: 10px;
+                display: block;
+            }
             
         </style>    
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     </head>
     <body>
-        <div id="app">
-            {{ greeting }}   
-            <input v-model="greeting" /> 
+        <div id="app" v-cloak>
+            <login-form/>
+            
 
             <hr />
 
-            <button @click="toggleBox">Toggle Box</button>
+            <button @click="toggleBox">Toggle Box</button> 
             <div v-if="isVisible" class="box"></div>
             
                  
@@ -42,10 +49,37 @@
                 },
                 methods: {
                     toggleBox() {
-                        this.isVisible = !this.isVisible();
+                        this.isVisible = !this.isVisible
+                    },
+                    greet(greeting){
+                        console.log(greeting)   //Event modifier
                     }
                 }
             })
+            app.component('login-form',{
+                template: `
+                <form @submit.prevent="handleSubmit">
+                    <h1>{{ title }}</h1>
+                    <input type="email" v-model="email" />
+                    <input type="password" v-model="password" />
+                    <button>Log in</button>
+                </form>    
+            `,
+            data() {
+                return{
+                    title: 'Login Form',
+                    email: '',
+                    password: ''
+                }
+            },
+            methods:{
+                handleSubmit() {
+                    console.log(this.email, this.password)
+                }
+
+            }    
+            }
+            )
             app.mount('#app') //Runs when entire page is loaded
         </script>    
 
